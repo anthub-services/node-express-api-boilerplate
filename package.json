@@ -1,0 +1,37 @@
+{
+  "name": "node-express-api-boilerplate",
+  "version": "0.1.0",
+  "description": "Node Express API Boilerplate",
+  "author": "Ricky Hurtado",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:anthub-services/node-express-api-boilerplate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anthub-services/node-express-api-boilerplate/issues"
+  },
+  "homepage": "https://github.com/anthub-services/node-express-api-boilerplate/tree/master",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "~1.0.1",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "~4.0.0",
+    "jsonwebtoken": "^8.1.1",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.32.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.12.1",
+    "sequelize-cli": "^3.2.0"
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node src/server.js"
+  }
+}

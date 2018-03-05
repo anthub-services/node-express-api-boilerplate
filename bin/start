@@ -1,0 +1,4 @@
+#!/bin/bash
+source $PWD/bin/bash.sh
+
+execute docker-compose up

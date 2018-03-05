@@ -1,0 +1,5 @@
+#!/bin/bash
+source $PWD/bin/bash.sh
+command=$(argsToCommand "$@")
+
+execute docker exec -it $command /bin/bash

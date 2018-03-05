@@ -1,0 +1,6 @@
+#!/bin/bash
+source $PWD/bin/bash.sh
+command=$(argsToCommand "$@")
+command=$(escapeDoubleQuotes "$command")
+
+execute docker-compose run --rm --user=node -v $PWD:/home/node/app express_api /bin/bash -c "cd /home/node/app && $command"

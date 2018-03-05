@@ -1,0 +1,6 @@
+#!/bin/bash
+source $PWD/bin/bash.sh
+
+execute sequelize db:create
+execute sequelize db:migrate
+execute sequelize db:seed:all

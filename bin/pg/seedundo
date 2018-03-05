@@ -1,0 +1,5 @@
+#!/bin/bash
+source $PWD/bin/bash.sh
+command=$(argsToCommand "$@")
+
+$PWD/bin/run node_modules/.bin/sequelize db:seed:undo --seed $command

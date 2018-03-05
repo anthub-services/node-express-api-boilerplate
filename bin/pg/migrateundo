@@ -1,0 +1,4 @@
+#!/bin/bash
+source $PWD/bin/bash.sh
+
+$PWD/bin/run node_modules/.bin/sequelize db:migrate:undo
