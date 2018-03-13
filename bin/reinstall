@@ -2,6 +2,11 @@
 source $PWD/bin/bash.sh
 
 execute docker-compose down
+
+execute rm -rf $PWD/.env $PWD/node_modules
+
+execute cp $PWD/.env.dist $PWD/.env
+
 execute docker-compose build
 
 $PWD/bin/run yarn

@@ -85,13 +85,13 @@ To manage separate Docker instance for API, open another terminal console and ru
 
 ### Docker
 
-| Command                                | Description                                         |
-|----------------------------------------|-----------------------------------------------------|
-| `./bin/install`                        | Build the Docker containers and initialise database |
-| `./bin/reinstall`                      | Re-build containers and re-initialise database      |
-| `./bin/start`                          | Start all the services (API and database)           |
-| `./bin/stop`                           | Stop all the services                               |
-| `./bin/console <container ID or Name>` | Access the terminal console of the API container    |
+| Command                                | Description                                                        |
+|----------------------------------------|--------------------------------------------------------------------|
+| `./bin/install`                        | Build the Docker containers, initialise database and start the app |
+| `./bin/reinstall`                      | Re-build containers, re-initialise database and start the app      |
+| `./bin/start`                          | Start all the services (API and database)                          |
+| `./bin/stop`                           | Stop all the services                                              |
+| `./bin/console <container ID or Name>` | Access the terminal console of the API container                   |
 
 ### Database
 

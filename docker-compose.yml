@@ -1,6 +1,7 @@
-version: '2.1'
+version: '3.5'
 services:
   express_api:
+    container_name: express_api
     build: .
     image: express_api
     user: node
@@ -16,6 +17,7 @@ services:
     env_file:
       - .env
   database:
+    container_name: postgres_db
     image: postgres:9.6
     volumes:
       - database:/var/lib/postgresql/data
