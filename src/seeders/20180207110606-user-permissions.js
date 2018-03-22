@@ -3,12 +3,15 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return Promise.all([
+      userPermission(queryInterface, 'superadmin@email.com', '*'),
       userPermission(queryInterface, 'admin@email.com', '*'),
-      userPermission(queryInterface, 'admin_no_settings@email.com', '*'),
-      userPermission(queryInterface, 'admin_no_settings@email.com', '/admin/settings', false),
+      userPermission(queryInterface, 'admin@email.com', '/admin/users/delete', false),
       userPermission(queryInterface, 'user@email.com', '/my-profile'),
       userPermission(queryInterface, 'user@email.com', '/admin'),
       userPermission(queryInterface, 'user@email.com', '/admin/dashboard'),
+      userPermission(queryInterface, 'user@email.com', '/admin/users'),
+      userPermission(queryInterface, 'user@email.com', '/admin/users/:userId'),
+      userPermission(queryInterface, 'user@email.com', '/admin/settings'),
       userPermission(queryInterface, 'referrer@email.com', '/my-profile'),
       userPermission(queryInterface, 'referrer@email.com', '/admin'),
       userPermission(queryInterface, 'referrer@email.com', '/admin/dashboard'),
@@ -37,7 +40,7 @@ function userPermission(queryInterface, email, path, allowedPath=true) {
       const data = {
         userId: promises[0],
         permissionId: promises[1],
-        allowedPath: allowedPath,
+        allowedPath,
         createdAt: date,
         updatedAt: date
       }

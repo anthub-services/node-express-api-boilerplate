@@ -15,6 +15,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true
     },
+    role: DataTypes.STRING,
     password: DataTypes.STRING,
     redirect: DataTypes.JSON,
     status: DataTypes.STRING

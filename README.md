@@ -117,8 +117,9 @@ To manage separate Docker instance for API, open another terminal console and ru
 
 Use the following credentials to test different API responses. Default password for all accounts is `password`.
 
-- **Admin User:** `admin@email.com` - can access all applications
-- **Admin User witout Settings page:** `admin_no_settings@email.com` - no access on admin Settings page
+- **Super Admin User:** `superadmin@email.com` - has wildcard access
+- **Admin User:** `admin@email.com` - has wildcard access but Admin › Users › Delete is excluded
+- **Common User:** `user@email.com` - can access My Profile, Admin › Dashboard, Users, Users › View, and Settings
 - **User redirected to internal page:** `referrer@email.com` – when `redirect.url` is set without the domain,
 user shall be redirected to internal page if no location path (referrer) found on the Sign In page
 - **User redirected to external page:** `redirect@email.com` – when `redirect.external` and `redirect.url` are set,

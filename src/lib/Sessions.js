@@ -31,7 +31,7 @@ export function find(res, options) {
       include: [{
         model: DB.User,
         as: 'User',
-        attributes: ['userId', 'firstName', 'lastName', 'email', 'status', 'redirect']
+        attributes: ['userId', 'firstName', 'lastName', 'email', 'role', 'status', 'redirect']
       }]
     })
     .then(Session => {
