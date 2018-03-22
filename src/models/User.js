@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
     },
     role: DataTypes.STRING,
     password: DataTypes.STRING,
-    redirect: DataTypes.JSON,
+    redirect: DataTypes.STRING,
     status: DataTypes.STRING
   })
 
@@ -25,28 +25,9 @@ export default (sequelize, DataTypes) => {
     return bcrypt.compareSync(password, this.password)
   }
 
-  User.prototype.permissions = function() {
-    let allowedPaths = []
-    let excludedPaths = []
-
-    for (const index in this.Permissions) {
-      const permission = this.Permissions[index]
-
-      if (permission.UserPermission.allowedPath) {
-        allowedPaths.push(permission.path)
-      }
-      else {
-        excludedPaths.push(permission.path)
-      }
-    }
-
-    return { allowedPaths, excludedPaths }
-  }
-
   User.associate = (models) => {
-    User.belongsToMany(models.Permission, {
-      through: 'UserPermission',
-      as: 'Permissions',
+    User.hasOne(models.Path, {
+      as: 'Paths',
       foreignKey: 'userId'
     })
 

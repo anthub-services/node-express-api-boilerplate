@@ -28,7 +28,7 @@ app.use(cors({
   origin: process.env.ALLOW_ORIGIN,
   credentials: true,
   allowedHeaders: 'X-Requested-With, Content-Type, Authorization',
-  methods: 'GET, POST, PATCH, PUT, POST, DELETE, OPTIONS'
+  methods: 'GET, POST, PATCH, PUT, DELETE, OPTIONS'
 }))
 
 app.use(bodyParser.json())

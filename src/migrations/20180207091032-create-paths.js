@@ -1,8 +1,8 @@
 'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserPermissions', {
-      userPermissionId: {
+    return queryInterface.createTable('Paths', {
+      pathId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -11,11 +11,8 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      permissionId: {
-        type: Sequelize.INTEGER
-      },
-      allowedPath: {
-        type: Sequelize.BOOLEAN
+     value: {
+        type: Sequelize.JSONB
       },
       createdAt: {
         allowNull: false,
@@ -27,10 +24,10 @@ module.exports = {
       }
     })
     .then(() => {
-      queryInterface.addIndex('UserPermissions', { fields: ['userId', 'permissionId'] })
+      queryInterface.addIndex('Paths', { fields: ['value'] })
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserPermissions')
+    return queryInterface.dropTable('Paths')
   }
 }

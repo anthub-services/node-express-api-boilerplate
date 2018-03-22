@@ -8,8 +8,15 @@ export default (app) => {
 
   /* Sessions */
   app.post('/sign-in', C.Sessions.authenticate)
-  app.post('/sign-out', C.Sessions.signOut)
+  app.post('/sign-out', authBearer(), C.Sessions.signOut)
   app.get('/verify-token', authBearer(), C.Sessions.verifyToken)
+
+  /* Users */
+  app.get('/users', authBearer(), C.Users.list)
+  app.post('/users', authBearer(), C.Users.create)
+  app.get('/users/:userId', authBearer(), C.Users.find)
+  app.put('/users/:userId', authBearer(), C.Users.update)
+  app.delete('/users/:userId', authBearer(), C.Users.destroy)
 
   /* Tests */
   app.get('/tests', C.Tests.list)

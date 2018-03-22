@@ -117,12 +117,22 @@ To manage separate Docker instance for API, open another terminal console and ru
 
 Use the following credentials to test different API responses. Default password for all accounts is `password`.
 
-- **Super Admin User:** `superadmin@email.com` - has wildcard access
-- **Admin User:** `admin@email.com` - has wildcard access but Admin › Users › Delete is excluded
-- **Common User:** `user@email.com` - can access My Profile, Admin › Dashboard, Users, Users › View, and Settings
-- **User redirected to internal page:** `referrer@email.com` – when `redirect.url` is set without the domain,
-user shall be redirected to internal page if no location path (referrer) found on the Sign In page
-- **User redirected to external page:** `redirect@email.com` – when `redirect.external` and `redirect.url` are set,
-user shall be redirected to external page if no location path (referrer) found on the Sign In page
-- **Blocked User:** `blocked@email.com` – user is signed in but the account is blocked
-- **Unauthorized User:** simply enter wrong `email` and/or `password`
+| Name              | Email                  | Description |
+|-------------------|------------------------|-------------|
+| Super Admin User  | `superadmin@email.com` | Has wildcard access |
+| Admin User        | `admin@email.com`      | Has wildcard access but `Admin › Users › Delete` is excluded |
+| Common User       | `user@email.com`       | Can access `My Profile`, `Admin › Dashboard`, `Users`, `Users › View, and Settings` |
+| Referrer User     | `referrer@email.com`   | When `redirect` is set without the domain, e.i. `/admin/dashboard`, user shall be redirected to internal page if no location path (referrer) found on the Sign In page |
+| Redirect User     | `redirect@email.com`   | When `redirect` is set with complete URL, e.i. `https://github.com/anthub-services`, user shall be redirected to external page if no location path (referrer) found on the Sign In page |
+| Blocked User      | `blocked@email.com`    | User is signed in but the account is blocked |
+| Unauthorized User | `<any invalid email>`  | Simply enter wrong `email` and/or `password` |
+
+## Docker Boilerplates
+
+The following boilerplates can be used to install and run the API and client boilerplates in a Docker container.
+
+[Docker for Node API Mockup Data and Client Boilerplates](https://github.com/anthub-services/docker-for-node-api-mockup-data-and-client-boilerplates)
+<br />
+[Docker for Node API and Client Boilerplates](https://github.com/anthub-services/docker-for-node-api-and-client-boilerplates)
+<br />
+[Docker for Rails API and Client Boilerplates](https://github.com/anthub-services/docker-for-rails-api-and-client-boilerplates)

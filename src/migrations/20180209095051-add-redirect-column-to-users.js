@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return Promise.all([
-      queryInterface.addColumn('Users', 'redirect', Sequelize.JSON),
+      queryInterface.addColumn('Users', 'redirect', { type: Sequelize.STRING, defaultValue: '' }),
     ])
   },
 

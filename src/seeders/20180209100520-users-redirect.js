@@ -3,8 +3,8 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return Promise.all([
-      userRedirect(queryInterface, 'referrer@email.com', { url: '/redux' }),
-      userRedirect(queryInterface, 'redirect@email.com', { external: true, url: 'https://github.com/rickyhurtado/node-api-and-client-boilerplate' })
+      userRedirect(queryInterface, 'referrer@email.com', '/redux'),
+      userRedirect(queryInterface, 'redirect@email.com', 'https://github.com/anthub-services/create-react-app-boilerplate')
     ])
   },
 
@@ -18,5 +18,5 @@ module.exports = {
 
 function userRedirect(queryInterface, email, redirect) {
   console.log('[User Redirect] ', redirect)
-  return queryInterface.sequelize.query(`UPDATE "Users" SET "redirect"='${JSON.stringify(redirect)}' WHERE "email"='${email}'`)
+  return queryInterface.sequelize.query(`UPDATE "Users" SET "redirect"='${redirect}' WHERE "email"='${email}'`)
 }

@@ -61,7 +61,7 @@ export function auth(req, res) {
   }
 
   return Users
-    .find(null, { where: { email }, returnData: true })
+    .find({ where: { email }, returnData: true })
     .then(User => {
       if (!User.object || !(User.object && User.object.authenticate(password)))
         return authResponse.invalid
