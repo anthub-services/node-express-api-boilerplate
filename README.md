@@ -5,10 +5,12 @@ Required node version is `9.2.1`.
 The API app is powered by [Express](https://expressjs.com/)
 and used as API service for the [Create React App Boilerplate](https://github.com/anthub-services/create-react-app-boilerplate).
 
-## Other API App Boilerplate
+## Other API App Boilerplates
 
 - [Node Express API Mockup Data Boilerplate](https://github.com/anthub-services/node-express-api-mockup-data-boilerplate) –
  non-database API server powered by [Express](https://expressjs.com/)
+- [Rails API Boilerplate](https://github.com/anthub-services/rails-api-boilerplate) –
+ API server powered by [Ruby on Rails](http://rubyonrails.org/) and [PostgreSQL](https://www.postgresql.org/) database
 
 ## Starting the App
 
@@ -131,8 +133,6 @@ Use the following credentials to test different API responses. Default password 
 
 The following boilerplates can be used to install and run the API and client boilerplates in a Docker container.
 
-[Docker for Node API Mockup Data and Client Boilerplates](https://github.com/anthub-services/docker-for-node-api-mockup-data-and-client-boilerplates)
-<br />
-[Docker for Node API and Client Boilerplates](https://github.com/anthub-services/docker-for-node-api-and-client-boilerplates)
-<br />
-[Docker for Rails API and Client Boilerplates](https://github.com/anthub-services/docker-for-rails-api-and-client-boilerplates)
+- [Docker for Node API Mockup Data and Client Boilerplates](https://github.com/anthub-services/docker-for-node-api-mockup-data-and-client-boilerplates)
+- [Docker for Node API and Client Boilerplates](https://github.com/anthub-services/docker-for-node-api-and-client-boilerplates)
+- [Docker for Rails API and Client Boilerplates](https://github.com/anthub-services/docker-for-rails-api-and-client-boilerplates)
