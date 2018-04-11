@@ -2,13 +2,14 @@ import _ from 'lodash'
 import BCrypt from 'bcrypt'
 import DB from '../models'
 import * as Paths from '../lib/Paths'
-import { filters, pageCount, orderBy } from '../helpers/Data'
+import { filters, pageCount, orderBy } from '../helpers/ActiveRecord'
 import { rand } from '../helpers/Math'
 
 const FILTER_OPTIONS = {
-  userId: { type: 'integer' },
+  userId:   { type: 'integer' },
   dateFrom: { col: 'createdAt', type: 'minDate' },
-  dateTo: { col: 'createdAt', type: 'maxDate' }
+  dateTo:   { col: 'createdAt', type: 'maxDate' },
+  regexp:   ['firstName', 'lastName']
 }
 const INCLUDE_PATHS = [{
   model: DB.Path,

@@ -9,9 +9,17 @@ export function filters(filtered, options={}) {
   const filterArray = []
 
   decodeURIComponent(filtered).split(',').map(filter => {
-    const array = filter.split(':')
+    const optionKeys = Object.keys(options)
+    const array      = filter.split(':')
+    const column     = array[0]
+    const value      = array[1]
 
-    filterArray.push(filterType(array[0], decodeURIComponent(array[1]), options))
+    if (_.indexOf(optionKeys, 'regexp') > -1 && _.indexOf(options.regexp, column) > -1)
+      decodeURIComponent(value).split(' ').map(decodedValue => {
+        filterArray.push(whereSQLFn(column, decodedValue, 'regexp'))
+      })
+    else
+      filterArray.push(filterType(column, decodeURIComponent(value), options))
   })
 
   return { $and: filterArray }
@@ -49,13 +57,20 @@ function filterType(key, value, options) {
     return filterObject
   }
 
+  return whereSQLFn(key, value)
+}
+
+function whereSQLFn(key, value, type='equal') {
+  let op = {}
+
+  if (type === 'equal') op = { $eq: value.toLowerCase() }
+  if (type === 'regexp') op = { $regexp: ['\\y', value, '\\y'].join('') }
+
   return Sequelize.where(
     Sequelize.fn(
       'lower',
       Sequelize.col(key)
     ),
-    {
-      $like: value.toLowerCase()
-    }
+    op
   )
 }
