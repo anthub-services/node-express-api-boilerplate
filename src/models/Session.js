@@ -14,6 +14,10 @@ export default (sequelize, DataTypes) => {
     signedOut: DataTypes.BOOLEAN
   })
 
+  Session.prototype.signedOutAt = function() {
+    return this.signedOut ? this.updatedAt : null
+  }
+
   Session.associate = (models) => {
     Session.belongsTo(models.User, {
       as: 'User',

@@ -1,8 +1,18 @@
+import _ from 'lodash'
+import Sequelize from 'sequelize'
 import JWT from 'jsonwebtoken'
 import Passport from 'passport'
 import HttpBearerStrategy from 'passport-http-bearer'
+import { filters, pageCount, orderBy, parseEncodedQuery } from '../helpers/ActiveRecord'
 import DB from '../models'
 import * as Users from './Users'
+
+const Op = Sequelize.Op
+const FILTER_OPTIONS = {
+  dateFrom: { col: 'createdAt', type: 'minDate' },
+  dateTo:   { col: 'createdAt', type: 'maxDate' },
+  regexp:   ['userAgent']
+}
 
 Passport.use(new HttpBearerStrategy(
   function(token, done) {
@@ -22,6 +32,58 @@ Passport.use(new HttpBearerStrategy(
   }
 ))
 
+export function list(options) {
+  const { res, query, returnData, jsonData } = options
+  const { filtered, sorted, limit, page } = query
+  const orderOptions = {
+    sorted: true,
+    replace: {
+      user: Sequelize.literal('\"User\".\"firstName\"'),
+      updatedAt: Sequelize.literal([
+        '\"Session\".\"signedOut\" DESC',
+        '\"Session\".\"updatedAt\"'
+      ].join(',')),
+    }
+  }
+
+  return DB.Session
+    .findAll({
+      where: filters(setQuery(filtered), FILTER_OPTIONS),
+      include: [setIncludeUser(filtered)],
+      offset: (page - 1) * limit,
+      order: orderBy(
+        setQuery(sorted, true),
+        ['sessionId', 'desc'],
+        orderOptions
+      ),
+      limit
+    })
+    .then(Sessions => {
+      const data = jsonData ? jsonSessions(Sessions) : Sessions
+
+      if (returnData) return data
+
+      return res.status(data ? 200 : 404).send(data)
+    })
+    .catch(error => {
+      console.log(error)
+
+      return returnData ? error : res.status(400).send(error)
+    })
+}
+
+export function pages({ query }) {
+  return DB.Session
+    .count({
+      col: 'sessionId',
+      where: filters(setQuery(query.filtered), FILTER_OPTIONS),
+      include: [setIncludeUser(query.filtered)]
+    })
+    .then(count => {
+      return pageCount(query, count)
+    })
+}
+
 export function find(res, options) {
   const { where, returnData } = options
 
@@ -31,7 +93,7 @@ export function find(res, options) {
       include: [{
         model: DB.User,
         as: 'User',
-        attributes: ['userId', 'firstName', 'lastName', 'email', 'role', 'status', 'redirect']
+        attributes: ['userId']
       }]
     })
     .then(Session => {
@@ -121,4 +183,71 @@ function getIpAddress(req) {
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress
   ).split(',')[0]
+}
+
+function jsonSessions(Sessions) {
+  return _.map(Sessions, Session => {
+      return {
+        sessionId: Session.sessionId,
+        user: {
+          userId: Session.User.userId,
+          name: Session.User.fullName()
+        },
+        userAgent: Session.userAgent,
+        ipAddress: Session.ipAddress,
+        createdAt: Session.createdAt,
+        signedOutAt: Session.signedOutAt()
+      }
+    })
+}
+
+function setQuery(query, sorted=false) {
+  const parsed = query ? parseEncodedQuery(query) : []
+  const newQuery = _.compact(
+    _.map(parsed, p => {
+      if (p[0] === 'signedOutAt') return ['updatedAt', p[1]].join(':')
+      if (p[0] !== 'user' || (p[0] === 'user' && sorted)) return p.join(':')
+    })
+  ).join(',')
+
+  return newQuery
+}
+
+function setIncludeUser(filtered) {
+  const parsed = filtered ? parseEncodedQuery(filtered) : []
+
+  let includeUser = {
+    model: DB.User,
+    as: 'User',
+    attributes: ['userId', 'firstName', 'lastName']
+  }
+
+  _.map(parsed, p => {
+    if (p[0] === 'user')
+      return includeUser['where'] = whereUser(p[1])
+  })
+
+  return includeUser
+}
+
+function whereUser(values) {
+  const decodedValues  = decodeURIComponent(decodeURIComponent(values))
+  const userSQLFnArray = _.map(decodedValues.split(' '), value => {
+    return { [Op.or]: [
+      userSQLFn('firstName', value),
+      userSQLFn('lastName', value)
+    ]}
+  })
+
+  return { [Op.and]: userSQLFnArray }
+}
+
+function userSQLFn(column, value) {
+  return Sequelize.where(
+    Sequelize.fn(
+      'lower',
+      Sequelize.col(column)
+    ),
+    { [Op.regexp]: ['\\y', value.toLowerCase(), '\\y'].join('') }
+  )
 }

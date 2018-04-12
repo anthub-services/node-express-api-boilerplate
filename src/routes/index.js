@@ -10,6 +10,7 @@ export default (app) => {
   app.post('/sign-in', C.Sessions.authenticate)
   app.post('/sign-out', authBearer(), C.Sessions.signOut)
   app.get('/verify-token', authBearer(), C.Sessions.verifyToken)
+  app.get('/sessions', authBearer(), C.Sessions.list)
 
   /* Users */
   app.get('/users', authBearer(), C.Users.list)
