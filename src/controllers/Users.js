@@ -24,9 +24,6 @@ export default {
   },
 
   create(req, res) {
-    // TODO: Send temporary password to the new user
-    // after the user record has beend created
-
     Users.create({
       res,
       body: req.body

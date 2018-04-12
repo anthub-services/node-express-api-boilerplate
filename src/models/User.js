@@ -25,6 +25,10 @@ export default (sequelize, DataTypes) => {
     return bcrypt.compareSync(password, this.password)
   }
 
+  User.prototype.fullName = function() {
+    return [this.firstName, this.lastName].join(' ')
+  }
+
   User.associate = (models) => {
     User.hasOne(models.Path, {
       as: 'Paths',

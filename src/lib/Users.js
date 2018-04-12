@@ -105,8 +105,8 @@ export function create(options) {
           updatedAt: new Date()
         })
         .then(User => {
-          // TODO: Create promises for paths creation and
-          // sending temporary password to the new user
+          // TODO: Send temporary password to the new user
+          // after the user's path has been created
 
           return Paths.create({
             res,
@@ -195,8 +195,7 @@ export function destroy(options) {
 }
 
 function jsonUsers(Users) {
-  return Users
-    .map(User => {
+  return _.map(Users, User => {
       return jsonUser(User)
     })
 }
