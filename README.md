@@ -22,11 +22,16 @@ Copy `.env.dist` to `.env` and change the values of the environment variables if
 PORT=7770
 ALLOW_ORIGIN=http://localhost:7771
 JWT_SECRET=jwtsecretcode
+HASH=sha1hash1.sha1hash2.sha1hash3
 POSTGRES_PORT=5432
 POSTGRES_DB=express_api_dev
 POSTGRES_USER=express_api_user
 POSTGRES_PASSWORD=root
 ```
+
+NOTE: Generate random hashes and concatenate the hashes with “.”.
+The same hashes should also be used in the React client app.
+The more hashes, the better.
 
 Then run the following commands:
 
@@ -87,33 +92,33 @@ To manage separate Docker instance for API, open another terminal console and ru
 
 ### Docker
 
-| Command                                | Description                                                        |
-|----------------------------------------|--------------------------------------------------------------------|
-| `./bin/install`                        | Build the Docker containers, initialise database and start the app |
-| `./bin/reinstall`                      | Re-build containers, re-initialise database and start the app      |
-| `./bin/start`                          | Start all the services (API and database)                          |
-| `./bin/stop`                           | Stop all the services                                              |
-| `./bin/console <container ID or Name>` | Access the terminal console of the API container                   |
+| Command                              | Description                                                        |
+|--------------------------------------|--------------------------------------------------------------------|
+| `bin/install`                        | Build the Docker containers, initialise database and start the app |
+| `bin/reinstall`                      | Re-build containers, re-initialise database and start the app      |
+| `bin/start`                          | Start all the services (API and database)                          |
+| `bin/stop`                           | Stop all the services                                              |
+| `bin/console <container ID or Name>` | Access the terminal console of the API container                   |
 
 ### Database
 
 **Local**
 
-| Command                               | Description                                                |
-|---------------------------------------|------------------------------------------------------------|
-| `./bin/pg/local/start`                | Start the PostgreSQL server (for Mac users only)           |
-| `./bin/pg/local/resetdb`              | Drop and re-initialise database                            |
-| `./bin/pg/local/migrate`              | Run new schema migration                                   |
-| `./bin/pg/local/migrateundo`          | Revert the recent schema migration                         |
-| `./bin/pg/local/seed <seed file>`     | Run specific data seed file with or without .js extension  |
-| `./bin/pg/local/seedundo <seed file>` | Revert the seed of specific data seed file                 |
-| `./bin/pg/local/psql`                 | Access the database console                                |
+| Command                             | Description                                                |
+|-------------------------------------|------------------------------------------------------------|
+| `bin/pg/local/start`                | Start the PostgreSQL server (for Mac users only)           |
+| `bin/pg/local/resetdb`              | Drop and re-initialise database                            |
+| `bin/pg/local/migrate`              | Run new schema migration                                   |
+| `bin/pg/local/migrateundo`          | Revert the recent schema migration                         |
+| `bin/pg/local/seed <seed file>`     | Run specific data seed file with or without .js extension  |
+| `bin/pg/local/seedundo <seed file>` | Revert the seed of specific data seed file                 |
+| `bin/pg/local/psql`                 | Access the database console                                |
 
 **Docker**
 
 - To run the commands for Docker database service, simply remove the `local` from the command
 - The `start` command works only in local machine
-- Used `./bin/pg/psql <database container ID or Name>` to access the database console
+- Used `bin/pg/psql <database container ID or Name>` to access the database console
 
 ## Users
 

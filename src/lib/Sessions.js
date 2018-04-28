@@ -15,11 +15,16 @@ const FILTER_OPTIONS = {
 }
 
 Passport.use(new HttpBearerStrategy(
-  function(token, done) {
-    const { userId } = verifyToken(null, { token, returnData: true })
+  { passReqToCallback: true },
+  function(req, token, done) {
+    const { userId } = verifyToken(null, { token, key: process.env.JWT_SECRET, returnData: true })
+    const ipAddress = getIpAddress(req)
+    const userAgent = req.headers['user-agent']
+
+    if (!userId) return done(null, false)
 
     return find(null, {
-      where: { userId, token },
+      where: { token, ipAddress, userAgent },
       returnData: true
     })
     .then(Session => {
@@ -110,15 +115,16 @@ export function find(res, options) {
 
 export function auth(req, res) {
   let status = 200, data = {}
-  const { email, password } = verifyToken(res, { token: req.body.token, returnData: true })
+  const { token, tkid } = req.body
+  const { email, password } = verifyToken(res, { token, key: hash(tkid)[0], returnData: true })
   const authResponse = {
     invalid: {
       status: 404,
-      data: { message: "The email or password you entered doesn't match any account." }
+      responseData: { message: "The email or password you entered doesn't match any account." }
     },
     blocked: {
       status: 401,
-      data: { message: 'Your account is blocked. Please contact the administrator.' }
+      responseData: { message: 'Your account is blocked. Please contact the administrator.' }
     }
   }
 
@@ -132,7 +138,9 @@ export function auth(req, res) {
         return authResponse.blocked
 
       const date = new Date()
-      const token = JWT.sign(Object.assign({}, User.json, { date }), process.env.JWT_SECRET, { expiresIn: 86400 })
+      const key = hash()
+      const token = JWT.sign({ userId: User.json.userId, date }, process.env.JWT_SECRET, { expiresIn: 86400 })
+      const data = JWT.sign(_.merge({}, User.json, { date }), key[0], { expiresIn: 86400 })
       const sessionData = {
         userId: User.json.userId,
         userAgent: req.headers['user-agent'],
@@ -143,8 +151,9 @@ export function auth(req, res) {
       return DB.Session
         .create(sessionData)
         .then(() => {
-          data = Object.assign({}, { token }, data, { redirect: User.json.redirect })
-          return { status, data }
+          const responseData = { token, data, redirect: User.json.redirect, tkid: key[1] }
+
+          return { status, responseData }
         })
     })
 }
@@ -164,10 +173,8 @@ export function authBearer() {
   return Passport.authenticate('bearer', { session: false })
 }
 
-function verifyToken(res, { token, returnData }) {
-  return JWT.verify(
-    token,
-    process.env.JWT_SECRET,
+function verifyToken(res, { token, key, returnData }) {
+  return JWT.verify(token, key,
     function(errors, decoded) {
       if (errors) return returnData ? {} : res.status(401).end()
 
@@ -250,4 +257,16 @@ function userSQLFn(column, value) {
     ),
     { [Op.regexp]: ['\\y', value.toLowerCase(), '\\y'].join('') }
   )
+}
+
+function hash(index) {
+  const hashList = process.env.HASH.split('.')
+
+  if (index) index = parseInt(index.toString().charAt(index.toString().length - 1), 10)
+  else index = _.random(0, hashList.length - 1)
+
+  return [
+    hashList[index],
+    [_.random(1111111, 9999999), index].join('')
+  ]
 }

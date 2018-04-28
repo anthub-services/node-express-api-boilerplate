@@ -27,7 +27,7 @@ export default {
     Sessions
       .auth(req, res)
       .then(auth => {
-        res.status(auth.status).send(auth.data)
+        res.status(auth.status).send(auth.responseData)
       })
       .catch(error => {
         res.status(400).send(error)
@@ -35,7 +35,8 @@ export default {
   },
 
   signOut(req, res) {
-    Sessions.signOut(req)
+    Sessions
+      .signOut(req)
       .then(() => {
         res.status(200).send()
       })
