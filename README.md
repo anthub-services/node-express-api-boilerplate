@@ -1,7 +1,7 @@
 # Node Express API Boilerplate
 This project is based on the
 [Node API and Client Boilerplate](https://github.com/anthub-services/node-api-and-client-boilerplate).
-Required node version is `9.2.1`.
+Required node version is `9.11.2`.
 The API app is powered by [Express](https://expressjs.com/)
 and used as API service for the [Create React App Boilerplate](https://github.com/anthub-services/create-react-app-boilerplate).
 
